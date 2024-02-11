@@ -1,7 +1,3 @@
-import numpy as np
-from itertools import permutations
-
-
 """
 This is the graph module. It contains a minimalistic Graph class.
 """
@@ -127,6 +123,7 @@ class Graph:
     
     def new_bfs(self, src, dst): 
         """
+        A new implementation of BFS specific for the swap puzzle
         Finds a shortest path from src to dst by BFS.  
 
         Parameters: 

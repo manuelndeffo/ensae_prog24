@@ -21,7 +21,7 @@ class Grid():
         Note: lines are numbered 0..m and columns are numbered 0..n.
     """
     
-    def __init__(self, m, n, initial_state = []):
+    def __init__(self, m, n, initial_state=[]):
         """
         Initializes the grid.
 
@@ -60,7 +60,7 @@ class Grid():
         """
         Checks is the current state of the grid is sorted and returns the answer as a boolean.
         """
-        return (self.state==[list(range(i*self.n+1, (i+1)*self.n+1)) for i in range(self.m)])
+        return (self.state == [list(range(i*self.n+1, (i+1)*self.n+1)) for i in range(self.m)])
     
     
     def swap(self, cell1, cell2):
@@ -73,12 +73,13 @@ class Grid():
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
         
-        if (cell1[0]==cell2[0] and abs(cell1[1]-cell2[1])==1) or (cell1[1]==cell2[1] and abs(cell1[0]-cell2[0])==1):
-            self.state[cell1[0]][cell1[1]],self.state[cell2[0]][cell2[1]]=self.state[cell2[0]][cell2[1]],self.state[cell1[0]][cell1[1]]
+        if (cell1[0] == cell2[0] and abs(cell1[1]-cell2[1]) == 1) or \
+           (cell1[1] == cell2[1] and abs(cell1[0]-cell2[0]) == 1):
+            self.state[cell1[0]][cell1[1]], self.state[cell2[0]][cell2[1]] = \
+                self.state[cell2[0]][cell2[1]], self.state[cell1[0]][cell1[1]]
         else:
             raise Exception('This swap is not allowed')
-            
-                
+                       
     def swap_seq(self, cell_pair_list):
         """
         Executes a sequence of swaps. 
@@ -90,7 +91,7 @@ class Grid():
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
         for cell_pair in cell_pair_list:
-            self.swap(cell_pair[0],cell_pair[1])
+            self.swap(cell_pair[0], cell_pair[1])
             
 
     @classmethod
@@ -121,62 +122,89 @@ class Grid():
             grid = Grid(m, n, initial_state)
         return grid
     
-    def plot_grid(self,color=''):
+    def plot_grid(self, color=''):
+        """
+        Display the grid 
+
+        Parameters: 
+        -----------
+        color : str or a tuple
+            Name of the color the  grid should be display 
+            So the format should be 'red' or r or (1.0, 0.0, 0.0).
+        """
         fig, ax = plt.subplots(figsize=(self.m, self.n))
-        ax.set_xlim(0,self.n)
+        ax.set_xlim(0, self.n)
         ax.set_ylim(self.m, 0)
         ax.grid(True)
-        ax.set_xticks(np.arange(0,self.n, 1.0))
+        ax.set_xticks(np.arange(0, self.n, 1.0))
         ax.set_yticks(np.arange(0, self.m, 1.0))
 
         # Add text inside each grid
-        counter=1
+        counter = 1
         for j in range(self.m):
             for i in range(self.n):
-                ax.text(i+0.5,j+0.5, f'{self.state[j][i]}',ha='center',va='center',color='black')
-                counter+=1
+                ax.text(i+0.5, j+0.5, f'{self.state[j][i]}', ha='center', va='center', color='black')
+                counter += 1
 
         ax.set_xticklabels([])
         ax.set_yticklabels([])
 
         # Display the colored grid using imshow
-        color_intensity=0
-        data=np.zeros((self.m+1,self.n+1))
+
+        data = np.zeros((self.m+1, self.n+1))
         if not color:
-            color='summer'
-        ax.imshow(data,cmap=color)
+            color = 'summer'
+        ax.imshow(data, cmap =color)
 
-
-    # get all the permutations of the flatten grid  
-
+      
     def flatten_grid_permutations(self):
+        """" Returns the list all all the permutations of a grid as a matrix"""
         return list(permutations(flatten_grid(self.state)))
 
-    #convert a list to a grid(matrix)
-    def tuple_to_grid(self,T):
-        matrix = np.array(T).reshape(self.m,self.n)
+    # convert a list to a grid(matrix)
+    def tuple_to_grid(self, T):
+        """" Converts a tuple into a grid """
+        matrix = np.array(T).reshape(self.m, self.n)
         return matrix.tolist()
 
     # graph construction
 
     def graph_construct(self):
 
-        all_state_tuple=self.flatten_grid_permutations()
-        g=Graph(all_state_tuple)
-        all_edges=[]
+        """ Return the graph of a grid where nodes is all the state of a grid """
+
+        all_state_tuple = self.flatten_grid_permutations()
+        g = Graph(all_state_tuple)
+        all_edges = []
         for elt1 in self.flatten_grid_permutations():
             for elt2 in self.flatten_grid_permutations():
-                if one_swap(self.tuple_to_grid(elt1),self.tuple_to_grid(elt2))==True:
-                    if (elt1,elt2) and (elt2,elt1) not in all_edges:
-                        all_edges.append((elt1,elt2))
+                if one_swap(self.tuple_to_grid(elt1),self.tuple_to_grid(elt2)) == True:
+                    if (elt1, elt2) and (elt2, elt1) not in all_edges:
+                        all_edges.append((elt1, elt2))
                         
         for ed in all_edges:
-            g.add_edge(ed[0],ed[1])
+            g.add_edge(ed[0], ed[1])
         return g
 
 # convert the grid(Matrix) into a list
 
+
 def flatten_grid(matrix):
+
+    """
+    Convert a matrix or a list of list into a grid.
+    
+    Parameters: 
+    -----------
+    matrix: list of list
+        the list of list you want to flatten
+
+    Output: 
+    -------
+    flat_list: list
+        The corresponding list
+    """
+
     flat_list = []
     for row in matrix:
         flat_list.extend(row)
@@ -186,19 +214,50 @@ def flatten_grid(matrix):
 # get the index of an element in a grid
 
 def get_index(gd, value):
+    """
+    Return the index of an element in a list of list .
+    
+    Parameters: 
+    -----------
+    gd: a list of list
+        The list of list where you want to get the index of an element: 
+
+    value: the element you want to get the index
+
+    Output: 
+    -------
+    (i,j): tuple
+           The index of value if it exist in the list of list
+    None:
+            If the value isn't in the list of list
+    
+    """
     for i, element in enumerate(gd):
         if value in element:
             return (i, element.index(value))
     return None
 
-# check if there is only one swap between two grid
-# count the number of swaps
-# all the elements of the grid should be at the same position except two elements]
-# check if there was a swap between the two elements that are not at the same position
 
 def one_swap(gr1, gr2):
+    """
+    Check if there is only one swap between two list of list.
+    
+    Parameters: 
+    -----------
+    gr1: list of list
+        The first list of list: 
+    gr2: list of list
+        The second list of list
+
+    Output: 
+    -------
+    True: boolean
+        If there was only one swap between the two list of list
+    False: boolean
+        If there are more than one swap or no swap
+    """
     S = 0
-    for i, j in zip(flatten_grid(gr1),flatten_grid(gr2)):
+    for i, j in zip(flatten_grid(gr1), flatten_grid(gr2)):
         if i != j:
             cell1 = get_index(gr1, i)
             cell2 = get_index(gr1, j)
@@ -212,10 +271,3 @@ def one_swap(gr1, gr2):
             return False
     else:
         return False
-
-
-g=Grid(2, 3, [[1,2,3],[4,5,6]])
-D=g.graph_construct()
-s=D.new_bfs((3,5,6,4,1,2),(1,2,3,4,5,6))
-print(len(s))
-g.plot_grid()
