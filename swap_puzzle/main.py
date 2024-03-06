@@ -2,6 +2,7 @@ from grid import Grid
 from graph import Graph
 from solver import Solver
 
+"""
 # create and print a grid of 2 lines and 3 columns
 g = Grid(2, 3)
 print(g)
@@ -60,3 +61,14 @@ print('To solve N we need to apply this different swaps:', B_sol)
 print('The numbers of swap to solve with the Bfs solution are:', len(B_sol))
 
 print('*****************')
+
+"""
+
+print('*******A_STAR*********')
+
+N = Solver(5, 5, [[1, 2, 4,16,17,], [3, 6, 5,13,18], [7, 8, 9,15,19],[10,11,12,14,20],[21,22,24,23,25]])
+print(N)
+N_sol = N.A_Star(N.ecludian)
+print('To solve N we need to apply this different swaps:', N_sol)
+print('The lenght', len(N_sol))
+print('***************')
