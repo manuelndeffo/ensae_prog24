@@ -4,9 +4,9 @@ This is the graph module. It contains a minimalistic Graph class.
 
 class Graph:
     """
-    A class representing undirected graphs as adjacency lists. 
+    A class representing undirected graphs as adjacency lists.
 
-    Attributes: 
+    Attributes:
     -----------
     nodes: NodeType
         A list of nodes. Nodes can be of any immutable type, e.g., integer, float, or string.
@@ -17,7 +17,7 @@ class Graph:
     nb_nodes: int
         The number of nodes.
     nb_edges: int
-        The number of edges. 
+        The number of edges.
     edges: list[tuple[NodeType, NodeType]]
         The list of all edges
     """
@@ -42,14 +42,14 @@ class Graph:
         Prints the graph as a list of neighbors for each node (one per line)
         """
         if not self.graph:
-            output = "The graph is empty"            
+            output = "The graph is empty"           
         else:
             output = f"The graph has {self.nb_nodes} nodes and {self.nb_edges} edges.\n"
             for source, destination in self.graph.items():
                 output += f"{source}-->{destination}\n"
         return output
 
-    def __repr__(self): 
+    def __repr__(self):
         """
         Returns a representation of the graph with number of nodes and edges.
         """
@@ -81,7 +81,7 @@ class Graph:
         self.nb_edges += 1
         self.edges.append((node1, node2))
 
-    def bfs(self, src, dst): 
+    def bfs(self, src, dst):
         """
         Finds a shortest path from src to dst by BFS.  
 
@@ -117,23 +117,23 @@ class Graph:
             end_node = dst
             while end_node is not None:
                 path.insert(0, end_node)
-                end_node = parent[end_node] 
+                end_node = parent[end_node]
 
         return path
-    
-    def new_bfs(self, src, dst): 
+  
+    def new_bfs(self, src, dst):
         """
         A new implementation of BFS specific for the swap puzzle
-        Finds a shortest path from src to dst by BFS.  
+        Finds a shortest path from src to dst by BFS. 
 
-        Parameters: 
+        Parameters:
         -----------
         src: NodeType
             The source node.
         dst: NodeType
             The destination node.
 
-        Output: 
+        Output:
         -------
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
@@ -162,23 +162,23 @@ class Graph:
                 end_node = parent[end_node] 
 
         return path
-        
+      
     @classmethod
     def graph_from_file(cls, file_name):
         """
         Reads a text file and returns the graph as an object of the Graph class.
 
-        The file should have the following format: 
+        The file should have the following format:
             The first line of the file is 'n m'
             The next m lines have 'node1 node2'
         The nodes (node1, node2) should be named 1..n
 
-        Parameters: 
+        Parameters:
         -----------
         file_name: str
             The name of the file
 
-        Outputs: 
+        Outputs:
         -----------
         graph: Graph
             An object of the class Graph with the graph from file_name.
@@ -194,4 +194,3 @@ class Graph:
                 else:
                     raise Exception("Format incorrect")
         return graph
-    

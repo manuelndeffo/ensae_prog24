@@ -1,5 +1,4 @@
 from grid import Grid
-from graph import Graph
 from collections import defaultdict
 import copy
 import heapq
@@ -159,7 +158,7 @@ class Solver(Grid):
 
         return d/2
     
-    def ecludian(self, tup):
+    def square_ecludian(self, tup):
 
         mat = self.tuple_to_grid(tup)
         d = 0
@@ -234,75 +233,75 @@ def flatten_grid(matrix):
         flat_list.extend(row)
     return flat_list
 
-def swappable(matrix,cell1,cell2):
+
+def swappable(matrix, cell1, cell2):
     
-    m=len(matrix)
-    n=len(matrix[0])
+    m = len(matrix)
+    n = len(matrix[0])
     
-    if 0<=cell1[0]<= m-1  and 0<=cell2[0]<= m-1 :
-        if 0<=cell1[1]<= n-1  and 0<=cell2[1]<= n-1:
-            if (cell1[0]==cell2[0] and abs(cell1[1]-cell2[1])==1) or (cell1[1]==cell2[1] and abs(cell1[0]-cell2[0])==1):
+    if 0 <= cell1[0] <= m-1  and 0 <= cell2[0] <= m-1 :
+        if 0 <= cell1[1] <= n-1  and 0 <= cell2[1] <= n-1:
+            if (cell1[0] == cell2[0] and abs(cell1[1]-cell2[1]) == 1) or (cell1[1] == cell2[1] and abs(cell1[0]-cell2[0]) == 1):
                 return True
     else:
         return False
-    
+
+
 def all_one_swaps(matrix):
     
-    track=set()
-    all_perm=[]
+    track = set()
+    all_perm = []
     
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
-            for k  in [1,-1]:
-                if swappable(matrix,(i,j),(i+k,j)):
-                    if ((i,j),(i+k,j)) not in track and ((i+k,j),(i,j)) not in track:
-                        track.add(((i,j),(i+k,j)))
-                        temp=copy.deepcopy(matrix)
-                        temp[i+k][j],temp[i][j] = temp[i][j],temp[i+k][j]
+            for k in [1, -1]:
+                if swappable(matrix, (i, j), (i+k, j)):
+                    if ((i, j), (i+k, j)) not in track and ((i+k, j), (i, j)) not in track:
+                        track.add(((i, j), (i+k, j)))
+                        temp = copy.deepcopy(matrix)
+                        temp[i+k][j], temp[i][j] = temp[i][j], temp[i+k][j]
                         all_perm.append(temp)
                         
-                if swappable(matrix,(i,j),(i,j+k)):
-                    if ((i,j),(i,j+k)) not in track and ((i,j+k),(i,j))not in track:
-                        track.add(((i,j),(i,j+k)))
-                        temp=copy.deepcopy(matrix)
-                        temp[i][j+k],temp[i][j] = temp[i][j],temp[i][j+k]
+                if swappable(matrix, (i, j), (i, j+k)):
+                    if ((i, j), (i, j+k)) not in track and ((i, j+k),(i, j))not in track:
+                        track.add(((i, j), (i, j+k)))
+                        temp = copy.deepcopy(matrix)
+                        temp[i][j+k], temp[i][j] = temp[i][j], temp[i][j+k]
                         all_perm.append(temp)
                         
     return all_perm
-
     
 def all_one_swaps_tuple(matrix):
     
-    track=set()
-    all_perm=[]
+    track = set()
+    all_perm = []
     
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
-            for k  in [1,-1]:
-                if swappable(matrix,(i,j),(i+k,j)):
-                    if ((i,j),(i+k,j)) not in track and ((i+k,j),(i,j)) not in track:
-                        track.add(((i,j),(i+k,j)))
-                        temp=copy.deepcopy(matrix)
-                        temp[i+k][j],temp[i][j] = temp[i][j],temp[i+k][j]
+            for k in [1, -1]:
+                if swappable(matrix, (i, j), (i+k, j)):
+                    if ((i, j), (i+k, j)) not in track and ((i+k, j), (i, j)) not in track:
+                        track.add(((i, j), (i+k, j)))
+                        temp = copy.deepcopy(matrix)
+                        temp[i+k][j], temp[i][j] = temp[i][j], temp[i+k][j]
                         all_perm.append(tuple(flatten_grid(temp)))
                         
-                if swappable(matrix,(i,j),(i,j+k)):
-                    if ((i,j),(i,j+k)) not in track and ((i,j+k),(i,j))not in track:
-                        track.add(((i,j),(i,j+k)))
-                        temp=copy.deepcopy(matrix)
-                        temp[i][j+k],temp[i][j] = temp[i][j],temp[i][j+k]
+                if swappable(matrix, (i, j), (i, j+k)):
+                    if ((i, j), (i, j+k)) not in track and ((i, j+k),(i, j))not in track:
+                        track.add(((i, j), (i, j+k)))
+                        temp = copy.deepcopy(matrix)
+                        temp[i][j+k], temp[i][j] = temp[i][j], temp[i][j+k]
                         all_perm.append(tuple(flatten_grid(temp)))
                         
     return all_perm
 
 
 def reconstruct_path(cameFrom, current):
-    
+
     total_path = [current]
     while current in cameFrom.keys():
         current = cameFrom[current]
-        total_path.append(current)
-        
+        total_path.append(current)     
     return total_path
 
 

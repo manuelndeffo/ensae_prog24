@@ -132,7 +132,7 @@ class Grid():
             Name of the color the  grid should be display 
             So the format should be 'red' or r or (1.0, 0.0, 0.0).
         """
-        fig, ax = plt.subplots(figsize=(self.m, self.n))
+        fig, ax = plt.subplots(figsize =(self.m, self.n))
         ax.set_xlim(0, self.n)
         ax.set_ylim(self.m, 0)
         ax.grid(True)
