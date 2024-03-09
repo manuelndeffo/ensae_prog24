@@ -1,5 +1,6 @@
 from grid import Grid
 from collections import defaultdict
+from collections import deque
 import copy
 import heapq
 import math
@@ -66,7 +67,7 @@ class Solver(Grid):
                     while not self.check_row(i):
                         cell = self.position(i)
                         self.swap(cell, (cell[0]-1, cell[1]))
-                        sol.append((cell, (cell[0]-1, cell[1]))) 
+                        sol.append((cell, (cell[0]-1, cell[1])))
         return sol
 
     def bfs_solution(self):
@@ -102,11 +103,13 @@ class Solver(Grid):
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
         parent = {src: None}
-        visited = [src]
-        queue = [src]
+        visited = set()
+        visited.append(src)
+        queue = deque()
+        queue.append(src)
 
         while len(queue) > 0:
-            v = queue.pop(0)
+            v = queue.popleft()
             for i in all_one_swaps(self.tuple_to_grid(v)):
                 if tuple(flatten_grid(i)) not in visited:
                     queue.append(tuple(flatten_grid(i)))
