@@ -1,3 +1,5 @@
+from collections import deque
+
 """
 This is the graph module. It contains a minimalistic Graph class.
 """
@@ -99,55 +101,17 @@ class Graph:
         """ 
 
         parent = {src: None}
-        visited = [src]
-        queue = [src]
+        visited = set()
+        visited.add(src)
+        queue = deque()
+        queue.append(src)
 
         while len(queue) > 0:
-            v = queue.pop(0)
+            v = queue.popleft()
             for i in self.graph[v]:
                 if i not in visited:
                     queue.append(i)
-                    visited.append(i)
-                    parent[i] = v
-
-        if (dst not in parent.values()) and parent.get(dst) is None:
-            path = None
-        else:
-            path = []
-            end_node = dst
-            while end_node is not None:
-                path.insert(0, end_node)
-                end_node = parent[end_node]
-
-        return path
-  
-    def new_bfs(self, src, dst):
-        """
-        A new implementation of BFS specific for the swap puzzle
-        Finds a shortest path from src to dst by BFS. 
-
-        Parameters:
-        -----------
-        src: NodeType
-            The source node.
-        dst: NodeType
-            The destination node.
-
-        Output:
-        -------
-        path: list[NodeType] | None
-            The shortest path from src to dst. Returns None if dst is not reachable from src
-        """ 
-        parent = {src: None}
-        visited = [src]
-        queue = [src]
-
-        while len(queue) > 0:
-            v = queue.pop(0)
-            for i in self.graph[v]:
-                if i not in visited:
-                    queue.append(i)
-                    visited.append(i)
+                    visited.add(i)
                     parent[i] = v
             if v == dst:
                 break
@@ -159,7 +123,7 @@ class Graph:
             end_node = dst
             while end_node is not None:
                 path.insert(0, end_node)
-                end_node = parent[end_node] 
+                end_node = parent[end_node]
 
         return path
       

@@ -29,9 +29,23 @@ class Solver(Grid):
         return (self.position(elt)[1] == self.position_order(elt)[1])
 
     def check_row(self, elt):
+
+        """Check if an element of a grid is in the correct row
+
+        Returns:
+
+        A boolean ( True or false )
+        """
+
         return (self.position(elt)[0] == self.position_order(elt)[0])
     
     def correct_position(self, elt):
+        """Check if an element of a grid is in the correct position
+
+        Returns:
+
+        A boolean ( True or false )
+        """
         return (self.position(elt) == self.position_order(elt))
 
     def get_solution(self):
@@ -76,15 +90,19 @@ class Solver(Grid):
         """
         g = self.graph_construct()
         tuple_sol = g.bfs(tuple(flatten_grid(self.state)), tuple(flatten_grid(self.final)))
+
+        return tuple_sol
+
+    def extract_solution(self, tup_sol):
         sol = []
-        for i in range(1, len(tuple_sol)):
+        for i in range(1, len(tup_sol)):
             for j in range(self.n*self.m):
-                if (tuple_sol[i][j] != tuple_sol[i-1][j]):
-                    sol.append((tuple_sol[i][j], tuple_sol[i-1][j]))
+                if (tup_sol[i][j] != tup_sol[i-1][j]):
+                    sol.append((tup_sol[i][j], tup_sol[i-1][j]))
                     break
         return sol
 
-    def new_bfs_solution2(self,src,dst):
+    def new_bfs_solution(self,src,dst):
 
         """
         A new implementation of BFS specific for the swap puzzle
@@ -104,17 +122,17 @@ class Solver(Grid):
         """ 
         parent = {src: None}
         visited = set()
-        visited.append(src)
+        visited.add(src)
         queue = deque()
         queue.append(src)
 
         while len(queue) > 0:
             v = queue.popleft()
-            for i in all_one_swaps(self.tuple_to_grid(v)):
-                if tuple(flatten_grid(i)) not in visited:
-                    queue.append(tuple(flatten_grid(i)))
-                    visited.append(tuple(flatten_grid(i)))
-                    parent[tuple(flatten_grid(i))] = v
+            for i in all_one_swaps_tuple(self.tuple_to_grid(v)):
+                if i not in visited:
+                    queue.append(i)
+                    visited.add(i)
+                    parent[i] = v
             if v == dst:
                 break
 
@@ -132,7 +150,7 @@ class Solver(Grid):
     def misplaced_tiles(self, tuple_grid):
 
         count = 0
-        count = sum(1 for x, y in zip(self.final, tuple_grid) if x != y)/2
+        count = sum(1 for x, y in zip(self.tuple_to_grid(self.final), tuple_grid) if x != y)/2
         return count
 
     def misplaced_rows_cols(self, tup):
@@ -140,10 +158,10 @@ class Solver(Grid):
         mat = self.tuple_to_grid(tup)
         count = 0
         for i in range(self.m):
-            for j  in range(self.n):
-                if self.check_column(mat[i][j]) == False:
+            for j in range(self.n):
+                if not self.check_column(mat[i][j]):
                     count += 1
-                if self.check_row(mat[i][j]) == False :
+                if not self.check_row(mat[i][j]):
                     count += 1
 
         return count/2
@@ -238,7 +256,7 @@ def flatten_grid(matrix):
 
 
 def swappable(matrix, cell1, cell2):
-    
+
     m = len(matrix)
     n = len(matrix[0])
     
@@ -248,32 +266,8 @@ def swappable(matrix, cell1, cell2):
                 return True
     else:
         return False
-
-
-def all_one_swaps(matrix):
-    
-    track = set()
-    all_perm = []
-    
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            for k in [1, -1]:
-                if swappable(matrix, (i, j), (i+k, j)):
-                    if ((i, j), (i+k, j)) not in track and ((i+k, j), (i, j)) not in track:
-                        track.add(((i, j), (i+k, j)))
-                        temp = copy.deepcopy(matrix)
-                        temp[i+k][j], temp[i][j] = temp[i][j], temp[i+k][j]
-                        all_perm.append(temp)
-                        
-                if swappable(matrix, (i, j), (i, j+k)):
-                    if ((i, j), (i, j+k)) not in track and ((i, j+k),(i, j))not in track:
-                        track.add(((i, j), (i, j+k)))
-                        temp = copy.deepcopy(matrix)
-                        temp[i][j+k], temp[i][j] = temp[i][j], temp[i][j+k]
-                        all_perm.append(temp)
-                        
-    return all_perm
-    
+        
+         
 def all_one_swaps_tuple(matrix):
     
     track = set()
@@ -297,6 +291,7 @@ def all_one_swaps_tuple(matrix):
                         all_perm.append(tuple(flatten_grid(temp)))
                         
     return all_perm
+
 
 
 def reconstruct_path(cameFrom, current):

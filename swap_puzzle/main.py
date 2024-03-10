@@ -63,12 +63,24 @@ print('The numbers of swap to solve with the Bfs solution are:', len(B_sol))
 print('*****************')
 
 """
-
+"""
 print('*******A_STAR*********')
 
-N = Solver(5, 5, [[1, 2, 4,16,17], [3, 6, 5,13,18], [7, 8, 9,15,19],[10,11,12,14,20],[21,22,24,23,25]])
+N = Solver(3, 3, [[1, 2, 4], [3, 6, 5], [7, 8, 9]])
 print(N)
 N_sol = N.A_Star(N.square_ecludian)
 print('To solve N we need to apply this different swaps:', N_sol)
 print('The lenght', len(N_sol))
 print('***************')
+"""
+print('*******A_STLAR*********')
+
+N = Solver(3, 2, [[1, 3], [5,4], [6,2]])
+print(N)
+N_sol = N.bfs_solution()
+L=N.extract_solution(N_sol)
+print('L', L)
+print('To solve N we need to apply this different swaps:', N_sol)
+print('The lenght', len(N_sol))
+print('***************')
+
