@@ -32,7 +32,7 @@ class Grid():
         n: int
             Number of columns in the grid
         initial_state: list[list[int]]
-            The intiail state of the grid. Default is empty (then the grid is created sorted).
+            The intial state of the grid. Default is empty (then the grid is created sorted).
         """
         self.m = m
         self.n = n
@@ -75,8 +75,7 @@ class Grid():
         
         if (cell1[0] == cell2[0] and abs(cell1[1]-cell2[1]) == 1) or \
            (cell1[1] == cell2[1] and abs(cell1[0]-cell2[0]) == 1):
-            self.state[cell1[0]][cell1[1]], self.state[cell2[0]][cell2[1]] = \
-                self.state[cell2[0]][cell2[1]], self.state[cell1[0]][cell1[1]]
+            self.state[cell1[0]][cell1[1]], self.state[cell2[0]][cell2[1]] = self.state[cell2[0]][cell2[1]], self.state[cell1[0]][cell1[1]]
         else:
             raise Exception('This swap is not allowed')
                        

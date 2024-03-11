@@ -102,7 +102,7 @@ class Solver(Grid):
                     break
         return sol
 
-    def new_bfs_solution(self,src,dst):
+    def new_bfs_solution(self, src, dst):
 
         """
         A new implementation of BFS specific for the swap puzzle
@@ -167,6 +167,7 @@ class Solver(Grid):
         return count/2
 
     def manhattan(self, tup):
+        "The Manhattan distance heuristic"
         
         mat = self.tuple_to_grid(tup)
         d = 0
@@ -180,6 +181,7 @@ class Solver(Grid):
         return d/2
     
     def square_ecludian(self, tup):
+        "The square of the Euclidian distance heuristic"
 
         mat = self.tuple_to_grid(tup)
         d = 0
@@ -194,6 +196,16 @@ class Solver(Grid):
 
     def A_Star(self, h):
 
+        """
+    Takes  a method( heuristic) to determine a short distance to solve a grid.
+    
+    Parameters: 
+    -----------
+    h : method of class solver 
+
+    Output: 
+    -------
+        """
         start = tuple(flatten_grid(self.state))
         goal = tuple(flatten_grid(self.final))
 
@@ -236,7 +248,7 @@ class Solver(Grid):
 def flatten_grid(matrix):
 
     """
-    Convert a matrix or a list of list into a grid.
+    Convert a matrix or a list of list into a list.
     
     Parameters: 
     -----------
@@ -257,6 +269,18 @@ def flatten_grid(matrix):
 
 def swappable(matrix, cell1, cell2):
 
+    """
+    Checks if two cells are swappable.
+    
+    Parameters: 
+    -----------
+    matrix: list of list
+        the list of list you want to flatten
+
+    Output: 
+    -------
+    A boolean ( True or False)
+    """
     m = len(matrix)
     n = len(matrix[0])
     
@@ -269,6 +293,20 @@ def swappable(matrix, cell1, cell2):
         
          
 def all_one_swaps_tuple(matrix):
+
+    """
+    Takes  a matrix (ist of list) and give all the possible swaps.
+    
+    Parameters: 
+    -----------
+    matrix: list of list
+        the list of list you want to flatten
+
+    Output: 
+    -------
+    all_perm: list
+        The corresponding list of all possible state of a list of lists
+    """   
     
     track = set()
     all_perm = []
@@ -296,10 +334,23 @@ def all_one_swaps_tuple(matrix):
 
 def reconstruct_path(cameFrom, current):
 
+    """
+    Takes a dictionnary and reconstruct the path to reach the nodes current.
+    
+    Parameters: 
+    -----------
+    current: list of list
+    Came_from: dictionnary
+
+    Output: 
+    -------
+    total_path: list
+        The corresponding path to reach current
+    """
     total_path = [current]
     while current in cameFrom.keys():
         current = cameFrom[current]
-        total_path.append(current)     
+        total_path.insert(0,current)     
     return total_path
 
 
