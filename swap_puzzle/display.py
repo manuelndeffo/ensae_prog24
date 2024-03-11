@@ -206,7 +206,6 @@ class Taquin ():
     
         pygame.quit()
 
-
 def create_blocs(m,n,k):
     """ Create the block in a grid and return the grid for block and blocks
     
@@ -308,12 +307,12 @@ def set_difficulty(matrix, difficulty) :
     m = np.shape(matrix)[1]
     N = Solver(n,m, matrix)
     N_sol = N.A_Star(N.square_ecludian)
-    if difficulty == 0 : 
-        M = N_sol[int(np.floor(len(N_sol)*0.6))]
-    elif difficulty == 1 : 
+    if difficulty == 1 : 
         M = N_sol[int(np.floor(len(N_sol)*0.8))]
+    elif difficulty == 1 : 
+        M = N_sol[int(np.floor(len(N_sol)*0.6))]
     elif difficulty == 2 : 
-        M = N_sol(len(N_sol)-1)
+        M = N_sol[int(np.floor(len(N_sol)*0.3))]
     else : 
         raise ValueError ("Ce niveau de niveau de difficulté n'existe pas.")
     return np.array(M).reshape(n,m)
