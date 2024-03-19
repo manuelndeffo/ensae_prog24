@@ -53,7 +53,7 @@ print('*****************')
 # Bfs with Graph
 print('*****************')
 
-new_bfs_N = graph_N.((3, 5, 6, 4, 1, 2), (1, 2, 3, 4, 5, 6))
+new_bfs_N = N.new_bfs_solution((3, 5, 6, 4, 1, 2), (1, 2, 3, 4, 5, 6))
 print('The number of solution with the new bfs algorithm', len(new_bfs_N)-1)
 
 print('*****************')
